@@ -2,6 +2,8 @@ using Identity;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.Extensions.FileProviders;
+using IdentityServer4.Configuration;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,8 @@ builder.Services.AddIdentityServer()
     .AddInMemoryClients(Configuration.Clients)
     .AddDeveloperSigningCredential();
 
+
+
 builder.Services.ConfigureApplicationCookie(config =>
 {
     config.Cookie.Name = "SearchCompanyIdentityCookie";
@@ -25,6 +29,16 @@ builder.Services.ConfigureApplicationCookie(config =>
 });
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+        policy.AllowAnyOrigin();
+    });
+});
 
 var app = builder.Build();
 
@@ -50,10 +64,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseRouting();
+app.UseCors("AllowAll");
 app.UseIdentityServer();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapDefaultControllerRoute();
-});
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

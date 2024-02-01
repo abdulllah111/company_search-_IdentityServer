@@ -1,48 +1,59 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityModel;
 
 namespace Identity
 {
-    public class Configuration
+    public static class Configuration
     {
         public static IEnumerable<ApiScope> ApiScopes =>
-           new List<ApiScope>{
+            new List<ApiScope>
+            {
                 new ApiScope("CompanySearchWebAPI", "Web API")
-           };
+            };
+
         public static IEnumerable<IdentityResource> IdentityResources =>
-            new List<IdentityResource>{
+            new List<IdentityResource>
+            {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile()
             };
+
         public static IEnumerable<ApiResource> ApiResources =>
-            new List<ApiResource>{
-                new ApiResource("CompanySearchWebAPI", "Web API", new [] {JwtClaimTypes.Name, JwtClaimTypes.BirthDate, JwtClaimTypes.Gender}){
+            new List<ApiResource>
+            {
+                new ApiResource("CompanySearchWebAPI", "Web API", new []
+                    { JwtClaimTypes.Name})
+                {
                     Scopes = {"CompanySearchWebAPI"}
                 }
             };
+
         public static IEnumerable<Client> Clients =>
-            new List<Client>{
-                new Client{
-                    ClientId = "company-search-web-api",
-                    ClientName = "MyWebAPI",
+            new List<Client>
+            {
+                new Client
+                {
+                    ClientId = "company-search-web-app",
+                    ClientName = "CompanySearch Web",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
                     RequirePkce = true,
-                    RedirectUris = {
-                        "http://.../signin-oidc"
+                    RedirectUris =
+                    {
+                        "https://localhost:7285/signin-oidc"
                     },
-                    AllowedCorsOrigins = {
-                        "http://..."
+                    AllowedCorsOrigins =
+                    {
+                        "https://localhost:7285"
                     },
-                    PostLogoutRedirectUris = {
-                        "http://.../signout-oidc"
+                    PostLogoutRedirectUris =
+                    {
+                        "https://localhost:7285/signout-oidc"
                     },
-                    AllowedScopes = {
+                    AllowedScopes =
+                    {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "CompanySearchWebAPI"

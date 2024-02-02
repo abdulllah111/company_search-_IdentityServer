@@ -50,7 +50,7 @@ namespace Identity
                     },
                     PostLogoutRedirectUris =
                     {
-                        "https://localhost:7285/signout-oidc"
+                        "https://localhost:7285/signout-callback-oidc"
                     },
                     AllowedScopes =
                     {

@@ -8,5 +8,6 @@ namespace Identity.Models
         public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public Gender Gender { get; set; }
+        public bool IsActive { get; internal set; }
     }
 }

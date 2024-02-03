@@ -4,6 +4,7 @@ using Identity.Models;
 using Microsoft.Extensions.FileProviders;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
+using IdentityServer4.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddIdentityServer()
     .AddInMemoryClients(Configuration.Clients)
     .AddDeveloperSigningCredential();
 
-
+builder.Services.AddTransient<IProfileService, ProfileService>();
 
 builder.Services.ConfigureApplicationCookie(config =>
 {

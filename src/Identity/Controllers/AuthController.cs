@@ -50,6 +50,7 @@ namespace Identity.Controllers
                 viewModel.Password!, false, false);
             if (result.Succeeded)
             {
+                user.IsActive = true;
                 return Redirect(viewModel.ReturnUrl!);
             }
             ModelState.AddModelError(string.Empty, "Login error");
@@ -79,7 +80,8 @@ namespace Identity.Controllers
                 Email = viewModel.Email,
                 UserName = viewModel.Username,
                 BirthDate = viewModel.BirthDate,
-                Gender = viewModel.Gender
+                Gender = viewModel.Gender,
+                IsActive = true,
             };
 
             var result = await _userManager.CreateAsync(user, viewModel.Password!);
